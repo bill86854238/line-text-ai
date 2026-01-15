@@ -13,10 +13,13 @@ export const generateGroqResponse = async (
   if (!apiKey) return "Groq API Key is missing.";
 
   try {
+    const systemPrompt = process.env.SYSTEM_PROMPT || 
+      "You are a concise LINE assistant. Answer briefly and clearly.";
+
     const messages: any[] = [
       {
         role: "system",
-        content: "You are a concise LINE assistant. Answer briefly and clearly.",
+        content: systemPrompt,
       },
       {
         role: "user",

@@ -49,10 +49,21 @@ http("lineWebhook", async (req: Request, res: Response) => {
         }
 
         const userId = event.source.userId || "anonymous";
-        const userMessage = event.message.text;
+        const userMessage = event.message.text.trim();
+
+        // 2.1 Command: Manual Reset
+        if (userMessage === "/reset" || userMessage === "/clear") {
+            memory.clear(userId);
+            await client.replyMessage(replyToken, {
+                type: "text",
+                text: "對話記憶已清除。"
+            });
+            return;
+        }
 
         // 3. Get Context (Last 5 messages)
         const history = memory.getHistory(userId);
+        const isNewSession = history.length === 0;
 
         // 4. Call AI
         let aiResponse = "";
@@ -67,9 +78,12 @@ http("lineWebhook", async (req: Request, res: Response) => {
         memory.addMessage(userId, `AI: ${aiResponse}`);
 
         // 6. Reply to LINE
+        // If it's a new session, append a notice
+        const finalResponse = isNewSession ? `${aiResponse}\n\n(已開啟新對話)` : aiResponse;
+
         await client.replyMessage(replyToken, {
             type: "text",
-            text: aiResponse
+            text: finalResponse
         });
       })
     );

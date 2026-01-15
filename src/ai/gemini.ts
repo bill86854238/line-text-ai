@@ -13,12 +13,15 @@ export const generateGeminiResponse = async (
   if (!apiKey) return "Gemini API Key is missing.";
 
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const modelName = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+    const model = genAI.getGenerativeModel({ model: modelName });
+
+    const systemPrompt = process.env.SYSTEM_PROMPT || 
+      "You are a concise LINE assistant. Keep your answers short, clear, and to the point. Avoid long explanations unless asked.";
 
     // Concise System Prompt
     const contextPrompt = `
-You are a concise LINE assistant. Keep your answers short, clear, and to the point.
-Avoid long explanations unless asked.
+${systemPrompt}
 
 Recent Context:
 ${history.join("\n")}
