@@ -35,24 +35,52 @@ This project addresses specific scenarios where official apps fall short:
 
 ### 🛠️ Installation & Setup
 
-1.  **Install Dependencies**
+#### 1. Prerequisites
+*   **Node.js** (v20 or later)
+*   **Git**
+*   **Google Cloud CLI**: [Install & Initialize](https://cloud.google.com/sdk/docs/install)
+
+#### 2. Google Cloud Setup
+Before deploying, ensure your GCP project is ready:
+```bash
+# Login to Google Cloud
+gcloud auth login
+
+# Create a new project (or use an existing one)
+gcloud projects create YOUR_PROJECT_ID
+
+# Set the current project
+gcloud config set project YOUR_PROJECT_ID
+
+# Enable required APIs (Crucial!)
+gcloud services enable cloudfunctions.googleapis.com run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+```
+
+#### 3. Local Setup
+1.  **Clone & Install**:
     ```bash
+    git clone https://github.com/bill86854238/line-text-ai.git
+    cd line-text-ai
     npm install
     ```
-2.  **Configure Environment Variables**
-    Copy `.env.example` to `.env` and fill in your API keys:
-    ```ini
-    LINE_CHANNEL_SECRET=your_line_secret
-    LINE_CHANNEL_ACCESS_TOKEN=your_line_token
-    GEMINI_API_KEY=your_gemini_key
-    # Add other keys as needed (GROQ_API_KEY, OPENAI_API_KEY, etc.)
-    ```
-3.  **Deploy (Windows)**
-    Run the included deployment script:
-    ```cmd
-    deploy.bat
-    ```
-    *This script automatically deploys to Google Cloud Functions Gen2 using settings from `.env`.*
+2.  **Configure Environment**:
+    Copy `.env.example` to `.env`.
+    *   **LINE Keys**: Go to [LINE Developers Console](https://developers.line.biz/), create a channel, and get your `Channel Secret` and `Channel Access Token`.
+    *   **AI Keys**: Get your API key from [Google AI Studio](https://aistudio.google.com/) or other providers.
+
+#### 4. Deploy (Windows)
+Run the deployment script:
+```cmd
+deploy.bat
+```
+*Wait for the deployment to finish. It will output a **Function URL** (e.g., `https://...run.app`).*
+
+#### 5. Finalize LINE Webhook
+1.  Copy the **Function URL**.
+2.  Go back to **LINE Developers Console** > **Messaging API** tab.
+3.  Paste the URL into **Webhook URL** and click **Update**.
+4.  Click **Verify** (Success? Great!).
+5.  Enable **Use Webhook**.
 
 ---
 
@@ -87,24 +115,52 @@ This project addresses specific scenarios where official apps fall short:
 
 ### 🛠️ インストールと設定
 
-1.  **依存パッケージのインストール**
+#### 1. 事前準備 (Prerequisites)
+*   **Node.js** (v20 以上)
+*   **Git**
+*   **Google Cloud CLI**: [インストールと初期化](https://cloud.google.com/sdk/docs/install)
+
+#### 2. Google Cloud の設定
+デプロイする前に、プロジェクトの準備をします：
+```bash
+# Google Cloud にログイン
+gcloud auth login
+
+# プロジェクトの作成（または既存のプロジェクトを使用）
+gcloud projects create YOUR_PROJECT_ID
+
+# プロジェクトの選択
+gcloud config set project YOUR_PROJECT_ID
+
+# 必要な API の有効化 (必須！)
+gcloud services enable cloudfunctions.googleapis.com run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+```
+
+#### 3. ローカル設定
+1.  **クローンとインストール**:
     ```bash
+    git clone https://github.com/bill86854238/line-text-ai.git
+    cd line-text-ai
     npm install
     ```
-2.  **環境変数の設定**
-    `.env.example` を `.env` にコピーし、API キーを入力してください：
-    ```ini
-    LINE_CHANNEL_SECRET=あなたのLINE_Secret
-    LINE_CHANNEL_ACCESS_TOKEN=あなたのLINE_Token
-    GEMINI_API_KEY=あなたのGemini_Key
-    # 必要に応じて他のキーも追加 (GROQ_API_KEY, OPENAI_API_KEY など)
-    ```
-3.  **デプロイ (Windows)**
-    付属のデプロイ用バッチファイルを実行します：
-    ```cmd
-    deploy.bat
-    ```
-    *`.env` の設定を読み込み、Google Cloud Functions Gen2 へ自動的にデプロイします。*
+2.  **環境変数の設定**:
+    `.env.example` を `.env` にコピーします。
+    *   **LINE Keys**: [LINE Developers Console](https://developers.line.biz/) でチャネルを作成し、`Channel Secret` と `Channel Access Token` を取得して記入します。
+    *   **AI Keys**: [Google AI Studio](https://aistudio.google.com/) などから API キーを取得して記入します。
+
+#### 4. デプロイ (Windows)
+デプロイ用スクリプトを実行します：
+```cmd
+deploy.bat
+```
+*デプロイが完了すると、**Function URL** (例: `https://...run.app`) が表示されます。これをコピーしてください。*
+
+#### 5. LINE Webhook の設定
+1.  コピーした **Function URL** を用意します。
+2.  **LINE Developers Console** に戻り、**Messaging API** タブを開きます。
+3.  **Webhook URL** に URL を貼り付け、**Update** をクリックします。
+4.  **Verify** ボタンを押して接続テストを行います（Success と出ればOK）。
+5.  **Use Webhook** をオンにします。
 
 ---
 
@@ -139,20 +195,49 @@ This project addresses specific scenarios where official apps fall short:
 
 ### 🛠️ 安裝與設定
 
-1.  **安裝依賴**
+#### 1. 前置準備 (Prerequisites)
+*   **Node.js** (v20 或以上)
+*   **Git**
+*   **Google Cloud CLI**: [安裝與初始化](https://cloud.google.com/sdk/docs/install)
+
+#### 2. Google Cloud 設定 (GCP)
+在部署之前，請先確保您的 GCP 專案已就緒：
+```bash
+# 登入 Google Cloud
+gcloud auth login
+
+# 建立新專案 (或使用現有專案)
+gcloud projects create YOUR_PROJECT_ID
+
+# 設定當前專案
+gcloud config set project YOUR_PROJECT_ID
+
+# 啟用必要的 API (這步很重要！)
+gcloud services enable cloudfunctions.googleapis.com run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+```
+
+#### 3. 本地端設定
+1.  **Clone 專案並安裝依賴**:
     ```bash
+    git clone https://github.com/bill86854238/line-text-ai.git
+    cd line-text-ai
     npm install
     ```
-2.  **設定環境變數**
-    複製 `.env.example` 為 `.env`，並填入您的 Key：
-    ```ini
-    LINE_CHANNEL_SECRET=您的LINE_Secret
-    LINE_CHANNEL_ACCESS_TOKEN=您的LINE_Token
-    GEMINI_API_KEY=您的Gemini_Key
-    # 根據需求填入其他 Key
-    ```
-3.  **部署 (Windows)**
-    執行一鍵部署腳本：
-    ```cmd
-    deploy.bat
-    ```
+2.  **設定環境變數**:
+    複製 `.env.example` 為 `.env`。
+    *   **LINE Keys**: 前往 [LINE Developers Console](https://developers.line.biz/) 建立 Channel，取得 `Channel Secret` 與 `Channel Access Token` 並填入。
+    *   **AI Keys**: 前往 [Google AI Studio](https://aistudio.google.com/) 或其他供應商取得 API Key 並填入。
+
+#### 4. 部署 (Windows)
+執行一鍵部署腳本：
+```cmd
+deploy.bat
+```
+*等待部署完成後，終端機將顯示 **Function URL** (例如 `https://...run.app`)，請複製該網址。*
+
+#### 5. 設定 LINE Webhook
+1.  將複製的 **Function URL** 準備好。
+2.  回到 **LINE Developers Console** > **Messaging API** 分頁。
+3.  將網址貼入 **Webhook URL** 欄位，並點擊 **Update**。
+4.  點擊 **Verify** 進行測試 (出現 Success 即代表成功)。
+5.  開啟 **Use Webhook** 選項。
