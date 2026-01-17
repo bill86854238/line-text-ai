@@ -17,8 +17,8 @@ export const generatePerplexityResponse = async (
   if (!apiKey) return "Perplexity API Key is missing.";
 
   try {
-    // Available models: llama-3-sonar-large-32k-online, llama-3-sonar-small-32k-online, etc.
-    const modelName = process.env.PERPLEXITY_MODEL || "llama-3-sonar-large-32k-online";
+    // Available models: llama-3.1-sonar-large-128k-online, etc.
+    const modelName = process.env.PERPLEXITY_MODEL || "llama-3.1-sonar-large-128k-online";
     const systemPrompt = process.env.SYSTEM_PROMPT || 
       "You are a concise LINE assistant. Answer briefly and clearly.";
 

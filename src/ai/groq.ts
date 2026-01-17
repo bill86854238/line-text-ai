@@ -29,7 +29,7 @@ export const generateGroqResponse = async (
 
     const completion = await groq.chat.completions.create({
       messages: messages,
-      model: "mixtral-8x7b-32768",
+      model: "llama-3.1-70b-versatile",
     });
 
     return completion.choices[0]?.message?.content || "No response.";

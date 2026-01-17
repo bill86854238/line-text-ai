@@ -13,7 +13,7 @@ export const generateAnthropicResponse = async (
   if (!apiKey) return "Anthropic API Key is missing.";
 
   try {
-    const modelName = process.env.ANTHROPIC_MODEL || "claude-3-opus-20240229";
+    const modelName = process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-20240620";
     const systemPrompt = process.env.SYSTEM_PROMPT || 
       "You are a concise LINE assistant. Answer briefly and clearly.";
 

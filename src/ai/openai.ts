@@ -13,7 +13,7 @@ export const generateOpenAIResponse = async (
   if (!apiKey) return "OpenAI API Key is missing.";
 
   try {
-    const modelName = process.env.OPENAI_MODEL || "gpt-3.5-turbo";
+    const modelName = process.env.OPENAI_MODEL || "gpt-4o";
     const systemPrompt = process.env.SYSTEM_PROMPT || 
       "You are a concise LINE assistant. Answer briefly and clearly.";
 

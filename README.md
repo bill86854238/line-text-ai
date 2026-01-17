@@ -18,10 +18,13 @@
 
 ## 🚀 功能特色
 
-*   **多模型支援**：預設使用 Google Gemini (可切換 Groq)。
+*   **多模型支援**：支援 Google Gemini, Groq, OpenAI (GPT), Anthropic (Claude), 與 Perplexity。
 *   **短期記憶**：自動保留最近 5 則對話，讓對話具備上下文。
 *   **新對話提示**：當系統冷啟動或記憶重置時，會貼心提醒 `(已開啟新對話)`。
-*   **手動重置**：使用者可輸入 `/reset` 或 `/clear` 清空自己的對話紀錄。
+*   **指令系統**：
+    *   `/reset` 或 `/clear`：手動清空對話紀錄。
+    *   `/model`：查看目前使用的模型。
+    *   `/model <name>`：切換模型 (支援 `gemini`, `groq`, `gpt`, `claude`, `perplexity`)。
 *   **過濾機制**：自動擋下貼圖與圖片，僅專注於文字交流。
 *   **Serverless 架構**：低成本、高擴展性，無須管理伺服器。
 
@@ -31,7 +34,7 @@
 line-text-ai/
 ├─ src/
 │ ├─ handler.ts      # 主程式 (Webhook 入口、邏輯處理)
-│ ├─ ai/             # AI API 封裝 (Gemini / Groq)
+│ ├─ ai/             # AI API 封裝 (Gemini / Groq / GPT / Claude / Perplexity)
 │ └─ context/        # 記憶體管理 (In-Memory Map)
 ├─ deploy.bat        # Windows 一鍵部署腳本
 ├─ package.json
@@ -50,12 +53,18 @@ line-text-ai/
     ```ini
     LINE_CHANNEL_SECRET=您的LINE_Secret
     LINE_CHANNEL_ACCESS_TOKEN=您的LINE_Token
+    
+    # AI Keys
     GEMINI_API_KEY=您的Gemini_Key
+    GROQ_API_KEY=您的Groq_Key
+    OPENAI_API_KEY=您的OpenAI_Key
+    ANTHROPIC_API_KEY=您的Anthropic_Key
+    PERPLEXITY_API_KEY=您的Perplexity_Key
     
     # 進階設定
-    GEMINI_MODEL=gemini-1.5-flash        # 指定模型版本
+    DEFAULT_AI_PROVIDER=gemini           # 預設供應商
     SYSTEM_PROMPT="你是親切的 LINE 助手..." # 設定 AI 人設
-    CONTEXT_LIMIT=5                      # (目前程式碼鎖定為 5，此變數保留供未來擴充)
+    CONTEXT_LIMIT=5                      # 記憶長度
     ```
 
 ## ☁️ 部署 (Windows)
