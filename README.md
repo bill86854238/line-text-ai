@@ -65,6 +65,9 @@ line-text-ai/
     DEFAULT_AI_PROVIDER=gemini           # 預設供應商
     SYSTEM_PROMPT="你是親切的 LINE 助手..." # 設定 AI 人設
     CONTEXT_LIMIT=5                      # 記憶長度
+    
+    # 模型版本設定 (選填，預設已為最新)
+    GEMINI_MODEL=gemini-3.0-flash
     ```
 
 ## ☁️ 部署 (Windows)
