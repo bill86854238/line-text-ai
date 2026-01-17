@@ -3,6 +3,9 @@ import * as line from "@line/bot-sdk";
 import { memory } from "./context/memory";
 import { generateGeminiResponse } from "./ai/gemini";
 import { generateGroqResponse } from "./ai/groq";
+import { generateOpenAIResponse } from "./ai/openai";
+import { generateAnthropicResponse } from "./ai/anthropic";
+import { generatePerplexityResponse } from "./ai/perplexity";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -76,7 +79,9 @@ http("lineWebhook", async (req: Request, res: Response) => {
             }
 
             const newProvider = parts[1]?.toLowerCase();
-            if (newProvider === "gemini" || newProvider === "groq") {
+            const validProviders = ["gemini", "groq", "gpt", "claude", "perplexity"];
+            
+            if (validProviders.includes(newProvider)) {
                 memory.setProvider(userId, newProvider);
                 await client.replyMessage(replyToken, {
                     type: "text",
@@ -85,7 +90,7 @@ http("lineWebhook", async (req: Request, res: Response) => {
             } else {
                 await client.replyMessage(replyToken, {
                     type: "text",
-                    text: `無效的模型名稱。請使用 /model gemini 或 /model groq`
+                    text: `無效的模型名稱。支援的模型: ${validProviders.join(", ")}`
                 });
             }
             return;
@@ -99,10 +104,23 @@ http("lineWebhook", async (req: Request, res: Response) => {
         let aiResponse = "";
         const provider = memory.getProvider(userId) || DEFAULT_PROVIDER;
 
-        if (provider === "groq") {
-            aiResponse = await generateGroqResponse(userMessage, history);
-        } else {
-            aiResponse = await generateGeminiResponse(userMessage, history);
+        switch (provider) {
+            case "groq":
+                aiResponse = await generateGroqResponse(userMessage, history);
+                break;
+            case "gpt":
+                aiResponse = await generateOpenAIResponse(userMessage, history);
+                break;
+            case "claude":
+                aiResponse = await generateAnthropicResponse(userMessage, history);
+                break;
+            case "perplexity":
+                aiResponse = await generatePerplexityResponse(userMessage, history);
+                break;
+            case "gemini":
+            default:
+                aiResponse = await generateGeminiResponse(userMessage, history);
+                break;
         }
 
         // 5. Update Context
