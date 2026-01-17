@@ -61,13 +61,45 @@ http("lineWebhook", async (req: Request, res: Response) => {
             return;
         }
 
+        // 2.2 Command: Switch Model
+        if (userMessage.startsWith("/model")) {
+            const parts = userMessage.split(" ");
+            const currentProvider = memory.getProvider(userId) || DEFAULT_PROVIDER;
+
+            if (parts.length === 1) {
+                // Check current model
+                await client.replyMessage(replyToken, {
+                    type: "text",
+                    text: `目前使用的模型: ${currentProvider}`
+                });
+                return;
+            }
+
+            const newProvider = parts[1]?.toLowerCase();
+            if (newProvider === "gemini" || newProvider === "groq") {
+                memory.setProvider(userId, newProvider);
+                await client.replyMessage(replyToken, {
+                    type: "text",
+                    text: `已切換至 ${newProvider} 模型。`
+                });
+            } else {
+                await client.replyMessage(replyToken, {
+                    type: "text",
+                    text: `無效的模型名稱。請使用 /model gemini 或 /model groq`
+                });
+            }
+            return;
+        }
+
         // 3. Get Context (Last 5 messages)
         const history = memory.getHistory(userId);
         const isNewSession = history.length === 0;
 
         // 4. Call AI
         let aiResponse = "";
-        if (DEFAULT_PROVIDER === "groq") {
+        const provider = memory.getProvider(userId) || DEFAULT_PROVIDER;
+
+        if (provider === "groq") {
             aiResponse = await generateGroqResponse(userMessage, history);
         } else {
             aiResponse = await generateGeminiResponse(userMessage, history);

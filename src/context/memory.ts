@@ -1,6 +1,7 @@
 // Simple in-memory storage for context.
 // Note: Resets on Cloud Functions restart/cold start.
 const memoryStore = new Map<string, string[]>();
+const providerStore = new Map<string, string>();
 
 // Strict limit as per requirements
 const LIMIT = 5;
@@ -25,5 +26,14 @@ export const memory = {
   // Optional: functionality to manually reset if needed in future debugging
   clear: (userId: string) => {
     memoryStore.delete(userId);
+    providerStore.delete(userId);
+  },
+
+  setProvider: (userId: string, provider: string) => {
+    providerStore.set(userId, provider);
+  },
+
+  getProvider: (userId: string): string | undefined => {
+    return providerStore.get(userId);
   }
 };
