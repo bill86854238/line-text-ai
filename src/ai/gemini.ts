@@ -13,7 +13,7 @@ export const generateGeminiResponse = async (
   if (!apiKey) return "Gemini API Key is missing.";
 
   try {
-    const modelName = process.env.GEMINI_MODEL || "gemini-3.0-flash";
+    const modelName = process.env.GEMINI_MODEL || "gemini-2.0-flash";
     const model = genAI.getGenerativeModel({ model: modelName });
 
     const systemPrompt = process.env.SYSTEM_PROMPT || 
